@@ -15,8 +15,9 @@ struct CityWeatherChartView: View {
     @State private var maxTemp: Double = 0.0
     @State private var description = "---"
     @State private var probOfPrecc: Double = 0.0
-    @State private var forecast: Forecast?
     @State private var days: [String] = []
+    @State private var dayTemperatures: [Double] = []
+    @State private var descriptions: [String] = []
     
     
     var body: some View {
@@ -43,15 +44,15 @@ struct CityWeatherChartView: View {
             }
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 20) {
-                    ForEach(0..<days.count , id: \.self) { index  in
+                    ForEach(0..<(days.count) , id: \.self) { index  in
                         VStack {
                             Text("\(days[index])")
                                 .font(.headline)
                                 .padding(.bottom, 5)
-                            Text("℃")
+                            Text("\(dayTemperatures[index])℃")
                                 .font(.headline)
                                 .padding(.bottom, 5)
-                            Text("light rain")
+                            Text(descriptions[index])
                                 .font(.headline)
                                 .padding(.bottom, 5)
                         }
@@ -84,23 +85,25 @@ struct CityWeatherChartView: View {
                 NetworkManager.shared.getCityForecastData(coordinates: coordinates) { (result) -> (Void) in
                     switch result {
                     case .success(let forecast):
-                        self.forecast = forecast
-                        self.minTemp = forecast.daily.first?.temp.min ?? 0.0
-                        self.maxTemp = forecast.daily.first?.temp.max ?? 0.0
-                        self.temp = forecast.daily.first?.temp.day ?? 0.0
-                        self.probOfPrecc = forecast.daily.first?.pop ?? 0.0
-                        self.description = forecast.daily.first?.weather.first?.description ?? "---"
                         
-                        for i in 0..<forecast.daily.count {
-                            let weekday = Calendar.current.component(.weekday, from: forecast.daily[i].dt)
-                            print(weekday, "DAYS OF THE WEEK")
-                            self.days.append(forecast.daily[i].dt.formatAsString())
+                        DispatchQueue.main.async {
+                            self.minTemp = forecast.daily.first?.temp.min ?? 0.0
+                            self.maxTemp = forecast.daily.first?.temp.max ?? 0.0
+                            self.temp = forecast.daily.first?.temp.day ?? 0.0
+                            self.probOfPrecc = forecast.daily.first?.pop ?? 0.0
+                            self.description = forecast.daily.first?.weather.first?.description ?? "---"
+                            
+                            for i in 0..<forecast.daily.count {
+                                self.days.append(forecast.daily[i].dt.formatAsString())
+                                self.dayTemperatures.append(forecast.daily[i].temp.day)
+                                self.descriptions.append(forecast.daily[i].weather.first?.description ?? "---")
+                            }
                         }
-                        print("=================>", forecast.daily.first?.temp ?? "No data")
-                        print(forecast.daily.first?.weather.first?.weatherIconUrl ?? "?????")
-                        //print("/////", self.forecast?.daily.count, "/////")
+                        
+//                        print("=================>", forecast.daily.first?.temp ?? "No data")
+
                     case .failure(.noData):
-                        print("Error encountered")
+                        print("Error encountered") // to show an alert in this case
                     case .failure(_):
                         print("Another error")
                         
