@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		B50FBDA026014DEF00A9A3BE /* CityWeatherChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50FBD9F26014DEF00A9A3BE /* CityWeatherChartView.swift */; };
+		B5120AA4260297E5002624B1 /* DayOfTheWeekView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5120AA3260297E4002624B1 /* DayOfTheWeekView.swift */; };
 		B54A90EF26000422001C6E3B /* CityWeatherApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54A90EE26000422001C6E3B /* CityWeatherApp.swift */; };
 		B54A90F32600042A001C6E3B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B54A90F226000429001C6E3B /* Assets.xcassets */; };
 		B54A90F62600042A001C6E3B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B54A90F52600042A001C6E3B /* Preview Assets.xcassets */; };
@@ -27,6 +28,7 @@
 
 /* Begin PBXFileReference section */
 		B50FBD9F26014DEF00A9A3BE /* CityWeatherChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityWeatherChartView.swift; sourceTree = "<group>"; };
+		B5120AA3260297E4002624B1 /* DayOfTheWeekView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOfTheWeekView.swift; sourceTree = "<group>"; };
 		B54A90EB26000422001C6E3B /* CityWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CityWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54A90EE26000422001C6E3B /* CityWeatherApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityWeatherApp.swift; sourceTree = "<group>"; };
 		B54A90F226000429001C6E3B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 				B54A911E2600E9D8001C6E3B /* SettingsView.swift */,
 				B54A910D26001517001C6E3B /* WeatherListView.swift */,
 				B50FBD9F26014DEF00A9A3BE /* CityWeatherChartView.swift */,
+				B5120AA3260297E4002624B1 /* DayOfTheWeekView.swift */,
 				B54A911B26002023001C6E3B /* AddCityView.swift */,
 				B54A911726001E88001C6E3B /* GlobalState.swift */,
 				B54A9110260015E5001C6E3B /* LeadingBarButtonView.swift */,
@@ -181,6 +184,7 @@
 				B54A910226000C9A001C6E3B /* NetworkManager.swift in Sources */,
 				B54A9111260015E5001C6E3B /* LeadingBarButtonView.swift in Sources */,
 				B54A910B2600118F001C6E3B /* WeatherViewModel.swift in Sources */,
+				B5120AA4260297E5002624B1 /* DayOfTheWeekView.swift in Sources */,
 				B54A911826001E88001C6E3B /* GlobalState.swift in Sources */,
 				B54A912326011B7D001C6E3B /* Extensions.swift in Sources */,
 				B50FBDA026014DEF00A9A3BE /* CityWeatherChartView.swift in Sources */,

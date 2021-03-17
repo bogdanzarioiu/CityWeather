@@ -21,6 +21,7 @@ struct AddCityView: View {
                     TextField("Enter city", text: $addWeatherVM.city)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .keyboardType(.asciiCapable)
+                        //.padding()
                     Button(action: {
                         addWeatherVM.saveCity { weather in
                             globalState.addWeather(weather: weather)
@@ -39,7 +40,7 @@ struct AddCityView: View {
 
                 }.padding()
                 .frame(maxWidth: .infinity, maxHeight: 200)
-                .background(Color(#colorLiteral(red: 0.913837254, green: 0.9333122373, blue: 0.9802277684, alpha: 1)))
+                .background(Color(#colorLiteral(red: 0.9725490196, green: 0.9725490196, blue: 1, alpha: 1)))
                 //.clipShape(RoundedRectangle(cornerRadius: 25.0, style: .continuous))
              Spacer()
             }//.padding()

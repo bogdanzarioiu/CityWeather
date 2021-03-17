@@ -26,46 +26,53 @@ struct WeatherListView: View {
     @State private var showSheet = false
     
     @State private var refreshState = false
-    @State private var status = "Your current location"
     @State private var currentCity = "Bucharest"
     @State private var currentTemp: Double = 0.0
     @State private var currentCountry = ""
     @State private var sunrise = Date()
     @State private var sunset = Date()
-    let timer = Timer.publish(every: 10, on: .current, in: .common)
+    let timer = Timer.publish(every: 300, on: .current, in: .common)
         .autoconnect()
     
-//    init() {
-//
-//    }
+
+    init() {
+        
+    }
     
     var body: some View {
         NavigationView {
             VStack {
-                Text(refreshState ? "Refreshing..." : "Your current location")
-                    .font(.footnote)
-                    .padding(.all, 5)
-                    .background(Color(#colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)))
-                Text(currentCity)
-                    .fontWeight(.bold)
-                Text("\(Int(currentTemp))")
-                Text(currentCountry)
-                HStack {
-                    Image(systemName: "sunrise")
-                    Text("\(sunrise.formatAsString())")
+                VStack(alignment: .leading) {
+                    Text(refreshState ? "Refreshing..." : "")
+                        .font(.footnote)
+                        //.padding(.all, 5)
+                        
+                    Text(currentCity)
+                        .fontWeight(.bold)
+                    Text("\(Int(currentTemp))")
+                    Text(currentCountry)
+                    HStack {
+                        Image(systemName: "sunrise")
+                        Text("\(sunrise.formatAsString())")
+                    }
+                    HStack {
+                        Image(systemName: "sunset")
+                        Text("\(sunset.formatAsString())")            }
                 }
-                HStack {
-                    Image(systemName: "sunset")
-                    Text("\(sunset.formatAsString())")            }
+                .padding()
+                .frame(width: UIScreen.main.bounds.width)
+                .background(Color(#colorLiteral(red: 0.9450980392, green: 0.9450980392, blue: 1, alpha: 1)))
+                
                 List {
                     ForEach(globalState.weatherList, id: \.id) { weather in
                         NavigationLink(destination: CityWeatherChartView(cityName: weather.cityName)) {
                             VStack {
                                 WeatherCityView(weather: weather)
-                                    .buttonStyle(PlainButtonStyle())
+                                    
         
                             }
                         }
+                        .buttonStyle(PlainButtonStyle())
                         
                     }
                 }
@@ -82,10 +89,14 @@ struct WeatherListView: View {
                 .navigationBarTitle("Cities")
                 .navigationBarItems(leading: LeadingBarButtonView(activeSheet: $activeSheet), trailing: TrailingBarButtonView(activeSheet: $activeSheet))
             }
+            
             .redacted(reason: getStatus() ? [] : .placeholder)
         
         }
+        .background(Color(#colorLiteral(red: 0.9725490196, green: 0.9725490196, blue: 1, alpha: 1)))
         .onAppear {
+            UITableViewCell.appearance().selectionStyle = .none
+            UITableView.appearance().separatorStyle = .none
             //print(manager.locationStatus, "TEST AUTHORIZATION STATUS")
             NetworkManager.shared.getCurrentLocationWeather { (weather) -> (Void) in
                 DispatchQueue.main.async {
@@ -98,14 +109,15 @@ struct WeatherListView: View {
                 
                 
             }
+            
+            
            
         }
-        .onReceive(timer){_ in
+        .onReceive(timer){ _ in
             print("Timer published a value")
-            withAnimation {
+            withAnimation(.easeIn(duration: 0.2)) {
                 self.refreshState.toggle()
             }
-            //self.status = "Refreshing..."
             print(self.refreshState)
             NetworkManager.shared.getCurrentLocationWeather { (weather) -> (Void) in
                 DispatchQueue.main.async {

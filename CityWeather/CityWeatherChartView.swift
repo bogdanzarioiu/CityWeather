@@ -9,21 +9,63 @@ import CoreLocation
 import SwiftUI
 
 struct CityWeatherChartView: View {
-    //@State var location = "Bucharest"
-    var cityName: String = ""
+    var cityName: String = "Paris"
     @State private var temp: Double = 0.0
     @State private var minTemp: Double = 0.0
     @State private var maxTemp: Double = 0.0
+    @State private var description = "---"
+    @State private var probOfPrecc: Double = 0.0
+    @State private var forecast: Forecast?
+    @State private var days: [String] = []
     
     
     var body: some View {
         VStack {
             Text(cityName)
+                .font(.system(size: 40, weight: .black))
+            Text("\(Int(temp))℃")
+                .font(.headline)
+            Text(description)
+                .font(.headline)
+            Text("\(probOfPrecc, specifier: "%.2f")%")
+                .font(.headline)
+                .padding()
+            Spacer()
+                .frame(width: 100, height: 100)
             HStack {
-                Text("\(Int(minTemp))℃")
-                Text("\(Int(maxTemp))℃")
+                Text("Min today: \(Int(minTemp))℃")
+                    .font(.headline)
+                Spacer()
+                    .frame(width: 100, height: 20)
+                Text("Max today: \(Int(maxTemp))℃")
+                    .font(.headline)
+               
             }
-            Text("\(Int(temp))")
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 20) {
+                    ForEach(0..<days.count , id: \.self) { index  in
+                        VStack {
+                            Text("\(days[index])")
+                                .font(.headline)
+                                .padding(.bottom, 5)
+                            Text("℃")
+                                .font(.headline)
+                                .padding(.bottom, 5)
+                            Text("light rain")
+                                .font(.headline)
+                                .padding(.bottom, 5)
+                        }
+                        .padding()
+                        .overlay(
+                            Rectangle()
+                                .stroke(lineWidth: 2)
+                        )
+                        
+                    }
+                }
+            }
+            .padding()
+            
         }
         .onAppear {
             getCityForecast()
@@ -42,16 +84,26 @@ struct CityWeatherChartView: View {
                 NetworkManager.shared.getCityForecastData(coordinates: coordinates) { (result) -> (Void) in
                     switch result {
                     case .success(let forecast):
+                        self.forecast = forecast
                         self.minTemp = forecast.daily.first?.temp.min ?? 0.0
                         self.maxTemp = forecast.daily.first?.temp.max ?? 0.0
                         self.temp = forecast.daily.first?.temp.day ?? 0.0
-
+                        self.probOfPrecc = forecast.daily.first?.pop ?? 0.0
+                        self.description = forecast.daily.first?.weather.first?.description ?? "---"
+                        
+                        for i in 0..<forecast.daily.count {
+                            let weekday = Calendar.current.component(.weekday, from: forecast.daily[i].dt)
+                            print(weekday, "DAYS OF THE WEEK")
+                            self.days.append(forecast.daily[i].dt.formatAsString())
+                        }
                         print("=================>", forecast.daily.first?.temp ?? "No data")
+                        print(forecast.daily.first?.weather.first?.weatherIconUrl ?? "?????")
+                        //print("/////", self.forecast?.daily.count, "/////")
                     case .failure(.noData):
                         print("Error encountered")
                     case .failure(_):
                         print("Another error")
-
+                        
                     }
                 }
                 
