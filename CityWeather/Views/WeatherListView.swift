@@ -31,7 +31,10 @@ struct WeatherListView: View {
     @State private var currentCountry = ""
     @State private var sunrise = Date()
     @State private var sunset = Date()
-    let timer = Timer.publish(every: 300, on: .current, in: .common)
+    @State private var description = ""
+    
+    //using a timer publisher that will update the current location weather every 60 seconds
+    let timer = Timer.publish(every: 60, on: .current, in: .common)
         .autoconnect()
     
 
@@ -47,17 +50,23 @@ struct WeatherListView: View {
                         .font(.footnote)
                         //.padding(.all, 5)
                         
-                    Text(currentCity)
-                        .fontWeight(.bold)
-                    Text("\(Int(currentTemp))")
-                    Text(currentCountry)
+                    Text("\(currentCity), \(currentCountry)")
+                        .font(.system(size: 20, weight: .black))
+                    Text("\(Int(currentTemp))℃ , \(description)")
+                        .font(.headline)
                     HStack {
                         Image(systemName: "sunrise")
-                        Text("\(sunrise.formatAsString())")
+                            .foregroundColor(Color(.systemYellow))
+                        Text("\(sunrise.formatAsStringForTime())")
+                            .font(.footnote)
                     }
                     HStack {
                         Image(systemName: "sunset")
-                        Text("\(sunset.formatAsString())")            }
+                            .foregroundColor(Color(.systemOrange))
+                        Text("\(sunset.formatAsStringForTime())")
+                            .font(.footnote)
+                        
+                    }
                 }
                 .padding()
                 .frame(width: UIScreen.main.bounds.width)
@@ -105,6 +114,7 @@ struct WeatherListView: View {
                     self.currentCountry = weather.sys.country
                     self.sunrise = weather.sys.sunrise
                     self.sunset = weather.sys.sunset
+                    self.description = weather.weather.first?.description ?? "---"
                 }
                 
                 
@@ -112,7 +122,7 @@ struct WeatherListView: View {
             
             
            
-        }
+        }//here we use the values received from the timer to perform the refresh
         .onReceive(timer){ _ in
             print("Timer published a value")
             withAnimation(.easeIn(duration: 0.2)) {
@@ -156,17 +166,25 @@ struct WeatherCityView: View {
     let weather: WeatherViewModel
     var body: some View {
         VStack(alignment: .leading, spacing: 15) {
-            Text(weather.weather.name)
-                .fontWeight(.bold)
-            Text("\(Int(weather.currentTemperature))℃")
-            Text("\(weather.weather.sys.country)")
+            Text("\(weather.weather.name), \(weather.weather.sys.country)")
+                .font(.system(size: 16, weight: .black))
+            Text("\(Int(weather.currentTemperature))℃, \(weather.weather.weather.first?.description ?? "---")")
+                .font(.headline)
+//            Text("\(weather.weather.sys.country)")
+//                .font(.headline)
             HStack {
                 Image(systemName: "sunrise")
-                Text("\(weather.weather.sys.sunrise.formatAsString())")
+                    .foregroundColor(Color(.systemYellow))
+                Text("\(weather.weather.sys.sunrise.formatAsStringForTime())")
+                    .font(.headline)
             }
             HStack {
                 Image(systemName: "sunset")
-                Text("\(weather.weather.sys.sunset.formatAsString())")            }
+                    .foregroundColor(Color(.systemOrange))
+                Text("\(weather.weather.sys.sunset.formatAsStringForTime())")
+                    .font(.headline)
+                
+            }
         }
     }
     

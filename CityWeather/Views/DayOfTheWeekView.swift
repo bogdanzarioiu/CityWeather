@@ -26,7 +26,7 @@ struct DayOfTheWeekView: View {
         .padding()
         .overlay(
             Rectangle()
-                .stroke(lineWidth: 2)
+                .stroke(lineWidth: 4)
         )
     }
 }
