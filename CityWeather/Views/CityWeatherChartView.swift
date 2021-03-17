@@ -6,6 +6,7 @@
 //
 
 import CoreLocation
+import SDWebImageSwiftUI
 import SwiftUI
 
 struct CityWeatherChartView: View {
@@ -18,6 +19,8 @@ struct CityWeatherChartView: View {
     @State private var days: [String] = []
     @State private var dayTemperatures: [Double] = []
     @State private var descriptions: [String] = []
+    @State private var icon = "04n"
+    @State private var icons: [String] = []
     
     
     var body: some View {
@@ -28,6 +31,9 @@ struct CityWeatherChartView: View {
                 .font(.headline)
             Text(description)
                 .font(.headline)
+            AnimatedImage(url: URL(string: Constants.URLs.weatherUrlAsStringByIcon(icon: icon)))
+                .resizable()
+                .frame(width: 85, height: 85)
             Text("\(probOfPrecc, specifier: "%.2f")%")
                 .font(.headline)
                 .padding()
@@ -55,6 +61,10 @@ struct CityWeatherChartView: View {
                             Text(descriptions[index])
                                 .font(.headline)
                                 .padding(.bottom, 5)
+                            AnimatedImage(url: URL(string: Constants.URLs.weatherUrlAsStringByIcon(icon: icons[index])))
+                                .resizable()
+                                .frame(width: 50, height: 50)
+                            
                         }
                         .padding()
                         .overlay(
@@ -92,11 +102,13 @@ struct CityWeatherChartView: View {
                             self.temp = forecast.daily.first?.temp.day ?? 0.0
                             self.probOfPrecc = forecast.daily.first?.pop ?? 0.0
                             self.description = forecast.daily.first?.weather.first?.description ?? "---"
+                            self.icon = forecast.daily.first?.weather.first?.icon ?? "04n"
                             
                             for i in 0..<forecast.daily.count {
                                 self.days.append(forecast.daily[i].dt.formatAsString())
                                 self.dayTemperatures.append(forecast.daily[i].temp.day)
                                 self.descriptions.append(forecast.daily[i].weather.first?.description ?? "---")
+                                self.icons.append(forecast.daily[i].weather.first?.icon ?? "04d")
                             }
                         }
                         
