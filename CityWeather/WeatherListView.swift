@@ -5,6 +5,8 @@
 //  Created by Bogdan on 3/15/21.
 //
 
+
+import Combine
 import SwiftUI
 
 
@@ -22,19 +24,28 @@ struct WeatherListView: View {
     @EnvironmentObject var globalState: GlobalState
     @State private var activeSheet: SheetType?
     @State private var showSheet = false
+    
+    @State private var refreshState = false
+    @State private var status = "Your current location"
     @State private var currentCity = "Bucharest"
     @State private var currentTemp: Double = 0.0
     @State private var currentCountry = ""
     @State private var sunrise = Date()
     @State private var sunset = Date()
+    let timer = Timer.publish(every: 10, on: .current, in: .common)
+        .autoconnect()
     
-    init() {
-        
-    }
+//    init() {
+//
+//    }
     
     var body: some View {
         NavigationView {
             VStack {
+                Text(refreshState ? "Refreshing..." : "Your current location")
+                    .font(.footnote)
+                    .padding(.all, 5)
+                    .background(Color(#colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)))
                 Text(currentCity)
                     .fontWeight(.bold)
                 Text("\(Int(currentTemp))")
@@ -51,6 +62,7 @@ struct WeatherListView: View {
                         NavigationLink(destination: CityWeatherChartView(cityName: weather.cityName)) {
                             VStack {
                                 WeatherCityView(weather: weather)
+                                    .buttonStyle(PlainButtonStyle())
         
                             }
                         }
@@ -87,6 +99,29 @@ struct WeatherListView: View {
                 
             }
            
+        }
+        .onReceive(timer){_ in
+            print("Timer published a value")
+            withAnimation {
+                self.refreshState.toggle()
+            }
+            //self.status = "Refreshing..."
+            print(self.refreshState)
+            NetworkManager.shared.getCurrentLocationWeather { (weather) -> (Void) in
+                DispatchQueue.main.async {
+                    self.currentCity = weather.name
+                    self.currentTemp = weather.main.temp
+                    self.currentCountry = weather.sys.country
+                    self.sunrise = weather.sys.sunrise
+                    self.sunset = weather.sys.sunset
+                }
+                
+                
+            }
+            
+        }
+        .onDisappear {
+        
         }
     }
     
