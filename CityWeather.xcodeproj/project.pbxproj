@@ -59,6 +59,48 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B5120AA62602AF13002624B1 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B54A90FE260005CF001C6E3B /* WeatherModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		B5120AA82602AF35002624B1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B54A9110260015E5001C6E3B /* LeadingBarButtonView.swift */,
+				B54A9113260015F7001C6E3B /* TrailingBarButtonView.swift */,
+				B54A911B26002023001C6E3B /* AddCityView.swift */,
+				B54A911E2600E9D8001C6E3B /* SettingsView.swift */,
+				B54A910D26001517001C6E3B /* WeatherListView.swift */,
+				B50FBD9F26014DEF00A9A3BE /* CityWeatherChartView.swift */,
+				B5120AA3260297E4002624B1 /* DayOfTheWeekView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		B5120AA92602AF42002624B1 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				B54A911726001E88001C6E3B /* GlobalState.swift */,
+				B54A910A2600118F001C6E3B /* WeatherViewModel.swift */,
+				B54A9107260010EC001C6E3B /* AddCityWeatherViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		B5120AAA2602AF91002624B1 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				B54A910426000E35001C6E3B /* Constants.swift */,
+				B54A912226011B7D001C6E3B /* Extensions.swift */,
+				B54A910126000C9A001C6E3B /* NetworkManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		B54A90E226000422001C6E3B = {
 			isa = PBXGroup;
 			children = (
@@ -78,21 +120,11 @@
 		B54A90ED26000422001C6E3B /* CityWeather */ = {
 			isa = PBXGroup;
 			children = (
+				B5120AAA2602AF91002624B1 /* Services */,
+				B5120AA92602AF42002624B1 /* ViewModels */,
+				B5120AA82602AF35002624B1 /* Views */,
+				B5120AA62602AF13002624B1 /* Models */,
 				B54A90EE26000422001C6E3B /* CityWeatherApp.swift */,
-				B54A90FE260005CF001C6E3B /* WeatherModel.swift */,
-				B54A9107260010EC001C6E3B /* AddCityWeatherViewModel.swift */,
-				B54A910126000C9A001C6E3B /* NetworkManager.swift */,
-				B54A910A2600118F001C6E3B /* WeatherViewModel.swift */,
-				B54A911E2600E9D8001C6E3B /* SettingsView.swift */,
-				B54A910D26001517001C6E3B /* WeatherListView.swift */,
-				B50FBD9F26014DEF00A9A3BE /* CityWeatherChartView.swift */,
-				B5120AA3260297E4002624B1 /* DayOfTheWeekView.swift */,
-				B54A911B26002023001C6E3B /* AddCityView.swift */,
-				B54A911726001E88001C6E3B /* GlobalState.swift */,
-				B54A9110260015E5001C6E3B /* LeadingBarButtonView.swift */,
-				B54A9113260015F7001C6E3B /* TrailingBarButtonView.swift */,
-				B54A910426000E35001C6E3B /* Constants.swift */,
-				B54A912226011B7D001C6E3B /* Extensions.swift */,
 				B54A90F226000429001C6E3B /* Assets.xcassets */,
 				B54A90F72600042A001C6E3B /* Info.plist */,
 				B54A90F42600042A001C6E3B /* Preview Content */,
