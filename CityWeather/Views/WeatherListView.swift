@@ -7,6 +7,7 @@
 
 
 import Combine
+import SDWebImageSwiftUI
 import SwiftUI
 
 
@@ -32,6 +33,7 @@ struct WeatherListView: View {
     @State private var sunrise = Date()
     @State private var sunset = Date()
     @State private var description = ""
+    @State private var iconString = ""
     
     //using a timer publisher that will update the current location weather every 60 seconds
     let timer = Timer.publish(every: 60, on: .current, in: .common)
@@ -45,43 +47,56 @@ struct WeatherListView: View {
     var body: some View {
         NavigationView {
             VStack {
-                VStack(alignment: .leading) {
-                    Text(refreshState ? "Refreshing..." : "")
-                        .font(.footnote)
-                        //.padding(.all, 5)
-                        
-                    Text("\(currentCity), \(currentCountry)")
-                        .font(.system(size: 20, weight: .black))
-                    Text("\(Int(currentTemp))℃ , \(description)")
-                        .font(.headline)
-                    HStack {
-                        Image(systemName: "sunrise")
-                            .foregroundColor(Color(.systemYellow))
-                        Text("\(sunrise.formatAsStringForTime())")
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text(refreshState ? "Refreshing..." : "")
                             .font(.footnote)
+                            //.padding(.all, 5)
+                            
+                        Text("\(currentCity), \(currentCountry)")
+                            .font(.system(size: 20, weight: .black))
+                        Text("\(Int(currentTemp))℃ , \(description)")
+                            .font(.headline)
+                        HStack {
+                            Image(systemName: "sunrise")
+                                .foregroundColor(Color(.systemYellow))
+                            Text("\(sunrise.formatAsStringForTime())")
+                                .font(.footnote)
+                        }
+                        HStack {
+                            Image(systemName: "sunset")
+                                .foregroundColor(Color(.systemOrange))
+                            Text("\(sunset.formatAsStringForTime())")
+                                .font(.footnote)
+                            
+                        }
                     }
-                    HStack {
-                        Image(systemName: "sunset")
-                            .foregroundColor(Color(.systemOrange))
-                        Text("\(sunset.formatAsStringForTime())")
-                            .font(.footnote)
-                        
-                    }
+                    .padding()
+                    .frame(width: UIScreen.main.bounds.width)
+                    .background(Color(#colorLiteral(red: 0.9450980392, green: 0.9450980392, blue: 1, alpha: 1)))
+                    
+                    
+                    AnimatedImage(url: URL(string: Constants.URLs.weatherUrlAsStringByIcon(icon: iconString)))
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                    
+
+                    
+
                 }
-                .padding()
-                .frame(width: UIScreen.main.bounds.width)
-                .background(Color(#colorLiteral(red: 0.9450980392, green: 0.9450980392, blue: 1, alpha: 1)))
                 
                 List {
                     ForEach(globalState.weatherList, id: \.id) { weather in
                         NavigationLink(destination: CityWeatherChartView(cityName: weather.cityName)) {
-                            VStack {
-                                WeatherCityView(weather: weather)
+                                VStack {
+                                    WeatherCityView(weather: weather)
                                     
-        
-                            }
+                                        
+            
+                                }
+                            
                         }
-                        .buttonStyle(PlainButtonStyle())
+                        //.buttonStyle(PlainButtonStyle())
                         
                     }
                 }
@@ -115,6 +130,7 @@ struct WeatherListView: View {
                     self.sunrise = weather.sys.sunrise
                     self.sunset = weather.sys.sunset
                     self.description = weather.weather.first?.description ?? "---"
+                    self.iconString = weather.weather.first?.icon ?? "04n"
                 }
                 
                 
@@ -165,26 +181,33 @@ struct WeatherListView: View {
 struct WeatherCityView: View {
     let weather: WeatherViewModel
     var body: some View {
-        VStack(alignment: .leading, spacing: 15) {
-            Text("\(weather.weather.name), \(weather.weather.sys.country)")
-                .font(.system(size: 16, weight: .black))
-            Text("\(Int(weather.currentTemperature))℃, \(weather.weather.weather.first?.description ?? "---")")
-                .font(.headline)
-//            Text("\(weather.weather.sys.country)")
-//                .font(.headline)
-            HStack {
-                Image(systemName: "sunrise")
-                    .foregroundColor(Color(.systemYellow))
-                Text("\(weather.weather.sys.sunrise.formatAsStringForTime())")
+        HStack {
+            VStack(alignment: .leading, spacing: 15) {
+                Text("\(weather.weather.name), \(weather.weather.sys.country)")
+                    .font(.system(size: 16, weight: .black))
+                Text("\(Int(weather.currentTemperature))℃, \(weather.weather.weather.first?.description ?? "---")")
                     .font(.headline)
+
+                HStack {
+                    Image(systemName: "sunrise")
+                        .foregroundColor(Color(.systemYellow))
+                    Text("\(weather.weather.sys.sunrise.formatAsStringForTime())")
+                        .font(.headline)
+                }
+                HStack {
+                    Image(systemName: "sunset")
+                        .foregroundColor(Color(.systemOrange))
+                    Text("\(weather.weather.sys.sunset.formatAsStringForTime())")
+                        .font(.headline)
+                    
+                }
             }
-            HStack {
-                Image(systemName: "sunset")
-                    .foregroundColor(Color(.systemOrange))
-                Text("\(weather.weather.sys.sunset.formatAsStringForTime())")
-                    .font(.headline)
-                
-            }
+            
+            Spacer()
+            AnimatedImage(url: URL(string: Constants.URLs.weatherUrlAsStringByIcon(icon: weather.weather.weather.first?.icon ?? "04n")))
+                .resizable()
+                .frame(width: 50, height: 50)
+
         }
     }
     

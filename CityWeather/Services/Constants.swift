@@ -13,7 +13,7 @@ struct Constants {
     
     struct URLs {
         static func weatherByCity(city: String) -> URL? {
-            URL(string: "https://api.openweathermap.org/data/2.5/weather?q=\(city)&appid=28ff23ca85384c074202ea8bccf807dc&units=metric")
+            URL(string: "https://api.openweathermap.org/data/2.5/weather?q=\(city.escaped())&appid=28ff23ca85384c074202ea8bccf807dc&units=metric")
         }
         
         static func weatherByCoordinates(coordinates: CLLocationCoordinate2D) -> URL? {
@@ -23,6 +23,10 @@ struct Constants {
         static func weatherForecastByCoordinates(coordinates: CLLocationCoordinate2D) -> URL? {
             URL(string: "https://api.openweathermap.org/data/2.5/onecall?lat=\(coordinates.latitude)&lon=\(coordinates.longitude)&exclude=current,minutely,hourly,alerts&appid=28ff23ca85384c074202ea8bccf807dc&units=metric")
         }
+        
+        static func weatherUrlAsStringByIcon(icon: String) -> String {
+                    return "https://openweathermap.org/img/w/\(icon).png"
+                }
     }
     
    

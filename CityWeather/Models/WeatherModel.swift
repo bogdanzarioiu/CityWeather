@@ -28,6 +28,10 @@ struct WeatherIcon: Decodable {
     let main: String
     let description: String
     let icon: String
+    var weatherIconUrl: URL { //I added this var 
+        let urlString = "http://openweathermap.org/img/wn/\(icon)@2x.png"
+        return URL(string: urlString)!
+    }
 }
 
 struct Sys: Decodable {
