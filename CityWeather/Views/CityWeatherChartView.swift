@@ -38,7 +38,7 @@ struct CityWeatherChartView: View {
                 .font(.headline)
                 .padding()
             Spacer()
-                .frame(width: 100, height: 100)
+                .frame(width: 100, height: 50)
             HStack {
                 Text("Min today: \(Int(minTemp))℃")
                     .font(.headline)
@@ -55,7 +55,7 @@ struct CityWeatherChartView: View {
                             Text("\(days[index])")
                                 .font(.headline)
                                 .padding(.bottom, 5)
-                            Text("\(dayTemperatures[index])℃")
+                            Text("\(dayTemperatures[index], specifier: "%.0f")℃")
                                 .font(.headline)
                                 .padding(.bottom, 5)
                             Text(descriptions[index])

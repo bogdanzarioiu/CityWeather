@@ -18,10 +18,14 @@ struct AddCityView: View {
         NavigationView {
             VStack {
                 VStack(spacing: 20) {
-                    TextField("Enter city", text: $addWeatherVM.city)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    TextField("Enter a city name", text: $addWeatherVM.city)
+                        //.textFieldStyle(RoundedBorderTextFieldStyle())
                         .keyboardType(.asciiCapable)
-                        //.padding()
+                        .padding(.all, 8)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                .stroke()
+                        )
                     Button(action: {
                         addWeatherVM.saveCity { weather in
                             globalState.addWeather(weather: weather)
@@ -30,17 +34,19 @@ struct AddCityView: View {
                     }, label: {
                         Text("Save")
                             .padding(10)
-                            .frame(maxWidth: UIScreen.main.bounds.width/4)
+                            .frame(maxWidth: UIScreen.main.bounds.width/3)
                             .foregroundColor(.white)
-                            .font(.system(size: 14, weight: .black))
+                            .font(.system(size: 15, weight: .bold))
                             .background(Color(.systemBlue))
+                            .cornerRadius(3)
                             //.clipShape(Rectangle())
                             
                     })
 
                 }.padding()
                 .frame(maxWidth: .infinity, maxHeight: 200)
-                .background(Color(#colorLiteral(red: 0.9725490196, green: 0.9725490196, blue: 1, alpha: 1)))
+                .background(Color(.systemGray5))
+                //.background(Color(#colorLiteral(red: 0.9725490196, green: 0.9725490196, blue: 1, alpha: 1)))
                 //.clipShape(RoundedRectangle(cornerRadius: 25.0, style: .continuous))
              Spacer()
             }//.padding()

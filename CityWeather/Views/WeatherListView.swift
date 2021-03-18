@@ -38,20 +38,18 @@ struct WeatherListView: View {
     //using a timer publisher that will update the current location weather every 60 seconds
     let timer = Timer.publish(every: 60, on: .current, in: .common)
         .autoconnect()
-    
+   
 
-    init() {
-        
-    }
+    
     
     var body: some View {
         NavigationView {
             VStack {
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text(refreshState ? "Refreshing..." : "")
-                            .font(.footnote)
-                            //.padding(.all, 5)
+                //HStack {
+                    VStack(alignment: .center) {
+//                        Text(refreshState ? "Refreshing..." : "")
+//                            .font(.footnote)
+//                            //.padding(.all, 5)
                             
                         Text("\(currentCity), \(currentCountry)")
                             .font(.system(size: 20, weight: .black))
@@ -70,20 +68,25 @@ struct WeatherListView: View {
                                 .font(.footnote)
                             
                         }
+                        
+                        AnimatedImage(url: URL(string: Constants.URLs.weatherUrlAsStringByIcon(icon: iconString)))
+                            .resizable()
+                            .frame(width: 65, height: 65)
+                            .padding()
                     }
                     .padding()
                     .frame(width: UIScreen.main.bounds.width)
-                    .background(Color(#colorLiteral(red: 0.9450980392, green: 0.9450980392, blue: 1, alpha: 1)))
+                    .background(Color(.systemGray5))
+                    //.background(Color(#colorLiteral(red: 0.9450980392, green: 0.9450980392, blue: 1, alpha: 1)))
                     
                     
-                    AnimatedImage(url: URL(string: Constants.URLs.weatherUrlAsStringByIcon(icon: iconString)))
-                        .resizable()
-                        .frame(width: 30, height: 30)
+                    
                     
 
                     
 
-                }
+               // }
+                //.padding()
                 
                 List {
                     ForEach(globalState.weatherList, id: \.id) { weather in
@@ -96,11 +99,10 @@ struct WeatherListView: View {
                                 }
                             
                         }
-                        //.buttonStyle(PlainButtonStyle())
                         
                     }
                 }
-                
+            
                 .listStyle(PlainListStyle())
                 .sheet(item: $activeSheet, content: { (item) in
                            switch item {
@@ -113,11 +115,12 @@ struct WeatherListView: View {
                 .navigationBarTitle("Cities")
                 .navigationBarItems(leading: LeadingBarButtonView(activeSheet: $activeSheet), trailing: TrailingBarButtonView(activeSheet: $activeSheet))
             }
-            
+        
             .redacted(reason: getStatus() ? [] : .placeholder)
         
         }
-        .background(Color(#colorLiteral(red: 0.9725490196, green: 0.9725490196, blue: 1, alpha: 1)))
+        //.background(Color(#colorLiteral(red: 0.9725490196, green: 0.9725490196, blue: 1, alpha: 1)))
+        .background(Color(.systemGray6))
         .onAppear {
             UITableViewCell.appearance().selectionStyle = .none
             UITableView.appearance().separatorStyle = .none
@@ -159,7 +162,8 @@ struct WeatherListView: View {
             
         }
         .onDisappear {
-        
+            //UITableViewCell.appearance().selectionStyle = .none
+            //UITableView.appearance().separatorStyle = .none
         }
     }
     
