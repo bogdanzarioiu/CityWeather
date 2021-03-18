@@ -18,8 +18,8 @@ struct TrailingBarButtonView: View {
             Text("Add city")
                 .font(.system(size: 14, weight: .heavy))
                 .padding(.all, 6)
-                .foregroundColor(Color(.label))
-                .background(Color(.systemBackground))
+                .foregroundColor(Color(.white))
+                .background(Color(.systemBlue))
                 .cornerRadius(3)
         })
     }

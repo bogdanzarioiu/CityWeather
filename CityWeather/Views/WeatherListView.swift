@@ -205,6 +205,8 @@ struct WeatherCityView: View {
                         .font(.headline)
                     
                 }
+                Text("min: \(weather.minTemperature, specifier: "%.0f")℃ max: \(weather.maxTemperature, specifier: "%.0f")℃")
+                    .font(.headline)
             }
             
             Spacer()
